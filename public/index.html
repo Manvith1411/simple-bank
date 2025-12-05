@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Bank — Dashboard</title>
+
+<style>
+  :root{
+    --bg-1:#071425; --bg-2:#071a2b; --muted:#9fb3c8;
+    --accent:#7c3aed; --accent-2:#06b6d4; --success:#10b981; --danger:#ef4444;
+    --glass: rgba(255,255,255,0.03); --radius:12px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+    background: linear-gradient(180deg,var(--bg-1),var(--bg-2)); color:#eaf6ff;
+    -webkit-font-smoothing:antialiased; min-height:100vh;
+  }
+  .topbar{
+    position:sticky; top:0; z-index:40; padding:12px 20px;
+    backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,0.03);
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  }
+  .wrap{ max-width:1100px; margin:0 auto; display:flex;align-items:center;justify-content:space-between;gap:12px }
+  .logo{ margin:0; font-weight:800; letter-spacing:.6px; font-size:18px }
+  .controls{ display:flex; gap:8px; align-items:center }
+  .btn{ padding:9px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); cursor:pointer; background:transparent; color:inherit }
+  .big{ background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#031824; font-weight:700; border:none; box-shadow:0 8px 22px rgba(7,12,25,0.6) }
+  .small{ padding:8px 10px; font-size:14px; border-radius:8px; }
+  .container{ max-width:1100px; margin:20px auto; padding:0 20px; display:grid; grid-template-columns:320px 360px 1fr; gap:18px }
+  @media (max-width:980px){ .container{ grid-template-columns:1fr } .wrap{ flex-direction:column; align-items:flex-start } }
+
+  .card{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:var(--radius);
+    padding:16px; border:1px solid rgba(255,255,255,0.03); box-shadow: 0 12px 34px rgba(2,6,23,0.55); }
+  h2{ margin:0 0 10px 0; font-size:18px }
+  label{ display:block; color:var(--muted); font-size:13px; margin-bottom:8px }
+  input{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04);
+    background:var(--glass); color:inherit; outline:none; font-size:14px }
+  input:focus{ box-shadow:0 8px 24px rgba(124,58,237,0.08); transform:translateY(-1px) }
+
+  .row{ display:flex; gap:10px; margin-top:10px }
+  .output-hint{ color:var(--muted); font-size:13px; margin-top:10px }
+
+  .toast{ position:fixed; right:18px; bottom:18px; z-index:80; padding:12px 16px; border-radius:10px; background:rgba(4,8,15,0.9);
+    color:#eaf6ff; border:1px solid rgba(255,255,255,0.03); box-shadow:0 10px 30px rgba(2,6,23,0.6); transform-origin:bottom right; opacity:0; pointer-events:none; transition:all .22s ease; }
+  .toast.show{ opacity:1; transform:translateY(-6px); pointer-events:auto }
+
+  .modal-backdrop{ position:fixed; inset:0; background:rgba(2,6,23,0.6); display:none; align-items:center; justify-content:center; z-index:100; }
+  .modal-backdrop.show{ display:flex }
+  .modal{
+    width: min(900px, calc(100% - 48px)); max-height:80vh; overflow:auto;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px; padding:16px; border:1px solid rgba(255,255,255,0.04); box-shadow:0 30px 80px rgba(2,6,23,0.7);
+  }
+  .modal-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px }
+  .modal-title{ font-weight:700; font-size:16px }
+  .modal-actions{ display:flex; gap:8px; align-items:center }
+  .modal-body{ background: #031018; padding:12px; border-radius:8px; color:#cfeffb; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:13px }
+  .modal pre{ white-space:pre-wrap; word-break:break-word; margin:0; font-size:13px; line-height:1.45 }
+
+  .muted{ color:var(--muted); font-size:13px }
+  .footer{ text-align:center; margin-top:18px; color:var(--muted); font-size:13px }
+
+  .copy-btn{ padding:8px 10px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.06); color:inherit; cursor:pointer }
+  .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; background:rgba(255,255,255,0.02); padding:4px 8px; border-radius:6px; font-size:12px }
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <h1 class="logo">Bank Dashboard</h1>
+    <div class="controls">
+      <button class="btn small" id="btnShowOutput">History</button>
+      <button class="btn big" id="btnCreateScroll">Create Account</button>
+      <button class="btn" id="btnDepositScroll">Deposit</button>
+      <button class="btn" id="btnWithdrawScroll">Withdraw</button>
+    </div>
+  </div>
+</header>
+
+<main class="container" role="main">
+  <section id="createSection" class="card">
+    <h2>Create Account</h2>
+    <label>Full name
+      <input id="name" type="text" placeholder="e.g. Anil Kumar">
+    </label>
+    <label>Initial deposit
+      <input id="deposit" type="number" step="0.01" placeholder="0.00">
+    </label>
+    <div class="row">
+      <button id="createBtn" class="btn big">Create Account</button>
+      <button id="listBtn" class="btn">List Accounts</button>
+    </div>
+    <p class="output-hint muted">Successful responses will be available in History (click Show History).</p>
+  </section>
+
+  <section id="depositWithdraw" class="card">
+    <h2>Deposit / Withdraw / Transactions</h2>
+    <label>Account ID
+      <input id="accId" type="text" placeholder="1">
+    </label>
+    <label>Amount
+      <input id="amount" type="number" step="0.01" placeholder="100.00">
+    </label>
+
+    <div class="row" style="margin-top:10px">
+      <button id="depositBtn" class="btn" style="background:linear-gradient(90deg,#34d399,#10b981); border:none; color:#012617">Deposit</button>
+      <button id="withdrawBtn" class="btn" style="background:linear-gradient(90deg,#f59e0b,#f97316); border:none; color:#2e1200">Withdraw</button>
+      <button id="transactionsBtn" class="btn">Transactions</button>
+
+    </div>
+
+    <hr style="border:none; height:1px; margin:14px 0; background:rgba(255,255,255,0.03)">
+
+    <h3 style="margin:0 0 8px 0">Transfer</h3>
+    <label>To Account ID
+      <input id="toAccId" type="text" placeholder="2">
+    </label>
+    <div class="row" style="margin-top:8px">
+      <button id="transferBtn" class="btn">Transfer</button>
+      <button id="clearBtn" class="btn">Clear</button>
+    </div>
+  </section>
+
+  <section class="card" style="grid-column:1 / 4">
+    <h2>Quick Tips</h2>
+    <p class="muted">Use account numeric IDs (1, 2, ...) shown by the <code class="kbd">List Accounts</code> response. Transactions are stored and shown when you click <strong>History</strong>.</p>
+  </section>
+</main>
+
+<div class="footer">Simple Bank Account Simulation - By M & B</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div id="modalBackdrop" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="modal" role="document">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">API Output</div>
+        <div class="muted" id="modalStatus">No transaction yet</div>
+      </div>
+      <div class="modal-actions">
+        <button id="copyBtn" class="copy-btn" title="Copy output">Copy</button>
+        <button id="closeModal" class="btn" aria-label="Close output">✕</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <pre id="modalContent">No transactions yet. Run an API call and click "History".</pre>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BASE = "http://localhost:3000";
+
+  const toastEl = document.getElementById('toast');
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const modalContent = document.getElementById('modalContent');
+  const modalStatus = document.getElementById('modalStatus');
+  const btnShowOutput = document.getElementById('btnShowOutput');
+  const closeModal = document.getElementById('closeModal');
+  const copyBtn = document.getElementById('copyBtn');
+
+  let lastResponse = { status: null, body: null, time: null };
+
+  function toast(msg, ok=true) {
+    toastEl.textContent = msg;
+    toastEl.style.borderColor = ok ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)';
+    toastEl.classList.add('show');
+    setTimeout(()=> toastEl.classList.remove('show'), 2800);
+  }
+
+  function openModal() {
+    if (lastResponse.body === null) {
+      modalContent.textContent = 'No transactions yet. Run an API call and click "History".';
+      modalStatus.textContent = 'No transactions yet';
+    } else {
+      modalStatus.textContent = `Status: ${lastResponse.status} • ${new Date(lastResponse.time).toLocaleString()}`;
+      try {
+        modalContent.textContent = JSON.stringify(lastResponse.body, null, 2);
+      } catch (e) {
+        modalContent.textContent = String(lastResponse.body);
+      }
+    }
+    modalBackdrop.classList.add('show');
+    modalBackdrop.setAttribute('aria-hidden','false');
+    closeModal.focus();
+  }
+  function hideModal() {
+    modalBackdrop.classList.remove('show');
+    modalBackdrop.setAttribute('aria-hidden','true');
+  }
+
+  copyBtn.addEventListener('click', async ()=>{
+    try {
+      await navigator.clipboard.writeText(modalContent.textContent);
+      toast('Copied history to clipboard');
+    } catch (e) {
+      toast('Copy failed', false);
+    }
+  });
+
+  modalBackdrop.addEventListener('click', (e)=>{
+    if (e.target === modalBackdrop) hideModal();
+  });
+  closeModal.addEventListener('click', hideModal);
+  window.addEventListener('keydown', (e)=> { if (e.key === 'Escape') hideModal(); });
+
+  btnShowOutput.addEventListener('click', openModal);
+
+  async function api(path, opts = {}) {
+    try {
+      const res = await fetch(BASE + path, opts);
+      const text = await res.text();
+      let body;
+      try { body = text ? JSON.parse(text) : null; } catch (e) { body = text; }
+      lastResponse = { status: res.status, body, time: Date.now() };
+      toast('Transaction Complete ✔️');
+      return lastResponse;
+    } catch (err) {
+      lastResponse = { status: 'network-error', body: String(err), time: Date.now() };
+      toast('Network error — click History', false);
+      return lastResponse;
+    }
+  }
+
+  document.getElementById('createBtn').addEventListener('click', async ()=>{
+    const name = document.getElementById('name').value.trim();
+    const deposit = parseFloat(document.getElementById('deposit').value || 0);
+    if (!name){ toast('Name required', false); return; }
+    if (isNaN(deposit) || deposit < 0){ toast('Invalid deposit', false); return; }
+    await api('/accounts', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, initialDeposit: deposit })
+    });
+  });
+
+  document.getElementById('listBtn').addEventListener('click', async ()=>{
+    await api('/accounts');
+  });
+
+  document.getElementById('depositBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('accId').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value);
+    if (!id){ toast('Account ID required', false); return; }
+    if (isNaN(amount) || amount <= 0){ toast('Invalid amount', false); return; }
+    await api(`/accounts/${id}/deposit`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ amount })
+    });
+  });
+
+  document.getElementById('withdrawBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('accId').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value);
+    if (!id){ toast('Account ID required', false); return; }
+    if (isNaN(amount) || amount <= 0){ toast('Invalid amount', false); return; }
+    await api(`/accounts/${id}/withdraw`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ amount })
+    });
+  });
+
+  document.getElementById('transactionsBtn').addEventListener('click', async ()=>{
+    const id = document.getElementById('accId').value.trim();
+    if (!id){ toast('Account ID required', false); return; }
+    await api(`/accounts/${id}/transactions`);
+  });
+
+  document.getElementById('transferBtn').addEventListener('click', async ()=>{
+    const from = document.getElementById('accId').value.trim();
+    const to = document.getElementById('toAccId').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value);
+    if (!from || !to){ toast('From & To required', false); return; }
+    if (isNaN(amount) || amount <= 0){ toast('Invalid amount', false); return; }
+    await api('/transfer', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ fromAccountId: from, toAccountId: to, amount })
+    });
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', ()=>{
+    document.getElementById('accId').value=''; document.getElementById('amount').value=''; document.getElementById('toAccId').value='';
+    toast('Inputs cleared');
+  });
+
+  document.getElementById('btnCreateScroll').addEventListener('click', ()=> {
+    document.getElementById('createSection').scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(()=> document.getElementById('name').focus(), 420);
+  });
+  document.getElementById('btnDepositScroll').addEventListener('click', ()=> {
+    document.getElementById('depositWithdraw').scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(()=> document.getElementById('accId').focus(), 420);
+  });
+  document.getElementById('btnWithdrawScroll').addEventListener('click', ()=> {
+    document.getElementById('depositWithdraw').scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(()=> document.getElementById('amount').focus(), 420);
+  });
+
+  toast('UI ready — run an action; responses appear when ready');
+
+</script>
+</body>
+</html>
