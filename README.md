@@ -32,4 +32,53 @@ This project includes a REST API backend and a smooth, modern frontend with moda
 + Node.js
 + Express.js
 + File-based persistence (data.json)
-  
+
+## API Documentation
+### Create Account
+```
+POST /accounts
+Body: { "name": "Alice", "initialDeposit": 2000 }
+```
+### Get All Accounts
+```
+GET /accounts
+```
+
+### Deposit
+```
+POST /accounts/:id/deposit
+Body: { "amount": 500 }
+```
+### Withdraw
+```
+POST /accounts/:id/withdraw
+Body: { "amount": 500 }
+```
+### Transfer
+```
+POST /transfer
+Body: { "fromAccountId": 1, "toAccountId": 2, "amount": 300 }
+```
+### Transaction History
+```
+GET /accounts/:id/transactions
+```
+## How to Run Locally
+### Install dependencies
+```
+npm install
+```
+### Start server
+```
+npm run dev   # or node index.js
+```
+Backend runs at:
+```
+http://localhost:3000
+```
+### Open the frontend
+Open:
+```
+http://localhost:3000
+```
+You’ll see the complete UI dashboard.
