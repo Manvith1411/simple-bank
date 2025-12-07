@@ -8,19 +8,19 @@ This project includes a REST API backend and a smooth, modern frontend with moda
 + List all accounts
 + View account balance
 
-### 🟡 Banking Operations
+### Banking Operations
 + Deposit money
 + Withdraw money
 + Transfer funds between accounts
 + View transaction history
 
-### 🟡 Validations & Rules
+### Validations & Rules
 + Prevent overdrafts
 + Prevent negative transfers
 + Ensure account exists
 + All operations logged as transactions
 
-### 🟡 Modern Frontend UI
+### Modern Frontend UI
 + Clean dashboard layout
 + Smooth scroll navigation
 + Beautiful glassy design
@@ -28,12 +28,12 @@ This project includes a REST API backend and a smooth, modern frontend with moda
 + Toast notifications
 + Fully responsive
 
-### 🟡 Backend Tech
+### Backend Tech
 + Node.js
 + Express.js
 + File-based persistence (data.json)
 
-## 🟢 API Documentation
+## 🟡 API Documentation
 ### Create Account
 ```
 POST /accounts
@@ -63,7 +63,7 @@ Body: { "fromAccountId": 1, "toAccountId": 2, "amount": 300 }
 ```
 GET /accounts/:id/transactions
 ```
-## 🟢 How to Run Locally
+## 🟡 How to Run Locally
 ### Install dependencies
 ```
 npm install
