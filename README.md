@@ -82,9 +82,8 @@ Open:
 http://localhost:3000
 ```
 You’ll see the complete UI dashboard.
-<img width="1360" height="768" alt="Screenshot (58)" src="https://github.com/user-attachments/assets/8275fdd0-ac56-4035-bf8c-d3654b5e6324" />
-<img width="1360" height="768" alt="Screenshot (57)" src="https://github.com/user-attachments/assets/5a69bd2a-7fcb-4c47-a553-12342a469649" />
-<img width="1360" height="768" alt="Screenshot (56)" src="https://github.com/user-attachments/assets/323bf770-e755-4177-9bb5-1e275992fc30" />
-<img width="1360" height="768" alt="Screenshot (55)" src="https://github.com/user-attachments/assets/19aa7419-0044-434f-b692-99d60ab45eca" />
-<img width="1360" height="768" alt="Screenshot (60)" src="https://github.com/user-attachments/assets/601f53b1-c8b6-4e32-bd50-85018ac4a364" />
-<img width="1360" height="768" alt="Screenshot (59)" src="https://github.com/user-attachments/assets/e488a6a7-ea00-4fe4-9971-9eb594b26f79" />
+
+<img width="1360" height="629" alt="Screenshot (60)" src="https://github.com/user-attachments/assets/76d6ab88-09c8-42db-9f19-d9a6b0a4c5d7" />
+<img width="1357" height="634" alt="Screenshot (59)" src="https://github.com/user-attachments/assets/a43bf190-343e-41be-b146-bc45138eb209" />
+<img width="1360" height="628" alt="Screenshot (58)" src="https://github.com/user-attachments/assets/1e98f8b1-cbb9-4782-a09b-4a42e9ac39c3" />
+<img width="1360" height="631" alt="Screenshot (57)" src="https://github.com/user-attachments/assets/cd6f82c3-c485-46d6-b382-3198bf94e37d" />
