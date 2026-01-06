@@ -83,7 +83,8 @@ http://localhost:3000
 ```
 You’ll see the complete UI dashboard.
 
-<img width="1360" height="629" alt="Screenshot (60)" src="https://github.com/user-attachments/assets/76d6ab88-09c8-42db-9f19-d9a6b0a4c5d7" />
-<img width="1357" height="634" alt="Screenshot (59)" src="https://github.com/user-attachments/assets/a43bf190-343e-41be-b146-bc45138eb209" />
-<img width="1360" height="628" alt="Screenshot (58)" src="https://github.com/user-attachments/assets/1e98f8b1-cbb9-4782-a09b-4a42e9ac39c3" />
+## 🟡 Screenshots
 <img width="1360" height="631" alt="Screenshot (57)" src="https://github.com/user-attachments/assets/cd6f82c3-c485-46d6-b382-3198bf94e37d" />
+<img width="1360" height="628" alt="Screenshot (58)" src="https://github.com/user-attachments/assets/1e98f8b1-cbb9-4782-a09b-4a42e9ac39c3" />
+<img width="1357" height="634" alt="Screenshot (59)" src="https://github.com/user-attachments/assets/a43bf190-343e-41be-b146-bc45138eb209" />
+<img width="1360" height="629" alt="Screenshot (60)" src="https://github.com/user-attachments/assets/76d6ab88-09c8-42db-9f19-d9a6b0a4c5d7" />
