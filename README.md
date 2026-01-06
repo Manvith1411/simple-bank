@@ -82,3 +82,9 @@ Open:
 http://localhost:3000
 ```
 You’ll see the complete UI dashboard.
+<img width="1360" height="768" alt="Screenshot (58)" src="https://github.com/user-attachments/assets/8275fdd0-ac56-4035-bf8c-d3654b5e6324" />
+<img width="1360" height="768" alt="Screenshot (57)" src="https://github.com/user-attachments/assets/5a69bd2a-7fcb-4c47-a553-12342a469649" />
+<img width="1360" height="768" alt="Screenshot (56)" src="https://github.com/user-attachments/assets/323bf770-e755-4177-9bb5-1e275992fc30" />
+<img width="1360" height="768" alt="Screenshot (55)" src="https://github.com/user-attachments/assets/19aa7419-0044-434f-b692-99d60ab45eca" />
+<img width="1360" height="768" alt="Screenshot (60)" src="https://github.com/user-attachments/assets/601f53b1-c8b6-4e32-bd50-85018ac4a364" />
+<img width="1360" height="768" alt="Screenshot (59)" src="https://github.com/user-attachments/assets/e488a6a7-ea00-4fe4-9971-9eb594b26f79" />
